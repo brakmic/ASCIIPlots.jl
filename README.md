@@ -157,4 +157,4 @@ This evaluates to,
 
 ### License
 
-[MIT](https://github.com/brakmic/ASCIIPlots.jl/blob/master/LICENSE.md)
+[MIT](https://github.com/johnmyleswhite/ASCIIPlots.jl/blob/master/LICENSE.md)
