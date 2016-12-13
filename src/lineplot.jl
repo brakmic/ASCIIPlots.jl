@@ -31,7 +31,7 @@ function lineplot(x::AbstractArray, y::AbstractArray)
 
     # Compute slope and non-empty points
     dy = diff([y; 2 * y[end] - y[end - 1]]) ./
-           max(diff([x; 2 * x[end] - x[end - 1]]), 1 / N)
+           max.(diff([x; 2 * x[end] - x[end - 1]]), 1 / N)
     S = zeros(res_y, res_x)
     A = zeros(res_y, res_x)
     for i in 1:N
@@ -94,7 +94,7 @@ function lineplot(x::AbstractArray, y::AbstractArray)
     @printf io "%2.2f" maxx
     print(io, "\n")
 
-    return ASCIIPlot(bytestring(io))
+    return ASCIIPlot(String(io))
 end
 
 lineplot(y::AbstractArray) = lineplot([1:length(y)], y)
