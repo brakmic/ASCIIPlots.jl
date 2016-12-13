@@ -1,11 +1,11 @@
 module ASCIIPlots
     using Compat
-    
+
     export ASCIIPlot
     export imagesc, lineplot, scatterplot
 
     immutable ASCIIPlot
-        s::ASCIIString
+        s::String
     end
 
     Base.show(io::IO, p::ASCIIPlot) = print(io, p.s)
