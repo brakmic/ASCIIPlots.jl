@@ -155,3 +155,6 @@ This evaluates to,
 		0.13                                                    6.19
 
 
+### License
+
+[MIT](https://github.com/brakmic/ASCIIPlots.jl/blob/master/LICENSE.md)
