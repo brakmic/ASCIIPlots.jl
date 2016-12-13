@@ -1,4 +1,4 @@
-function lineplot(x::AbstractArray, y::AbstractArray)
+function scatterplot(x::AbstractArray, y::AbstractArray; sym::Char = '^')
     x, y = vec(x), vec(y)
 
     # Sanity checking
@@ -9,11 +9,6 @@ function lineplot(x::AbstractArray, y::AbstractArray)
 
     # Resolution along x and y dimensions
     res_x, res_y = 60, 20
-
-    # Sort the points to make slopes easier to calculate
-    ind = sortperm(x)
-    x = x[ind]
-    y = y[ind]
 
     # Standarize data scale
     minx = minimum(x)
@@ -29,13 +24,9 @@ function lineplot(x::AbstractArray, y::AbstractArray)
     xi = floor(Integer, x * (res_x - 1)) .+ 1
     yi = floor(Integer, y * (res_y - 1)) .+ 1
 
-    # Compute slope and non-empty points
-    dy = diff([y; 2 * y[end] - y[end - 1]]) ./
-           max.(diff([x; 2 * x[end] - x[end - 1]]), 1 / N)
-    S = zeros(res_y, res_x)
+    # Is there a point at location (i, j)?
     A = zeros(res_y, res_x)
     for i in 1:N
-        S[yi[i], xi[i]] = dy[i]
         A[yi[i], xi[i]] = 1
     end
 
@@ -57,13 +48,7 @@ function lineplot(x::AbstractArray, y::AbstractArray)
         # Data points
         for j = 1:res_x
             if A[i, j] == 1
-                if S[i, j] < -0.5
-                    print(io, "\\")
-                elseif S[i, j] < 0.5
-                    print(io, "-")
-                else
-                    print(io, "/")
-                end
+                print(io, sym)
             else
                 print(io, " ")
             end
@@ -86,15 +71,18 @@ function lineplot(x::AbstractArray, y::AbstractArray)
     end
     print(io, "\n")
 
-    # X tick marks
+    # Tick marks for X axis
     @printf io "\t%2.2f" minx
     for j = 1:(res_x - 8)
         print(io, " ")
     end
     @printf io "%2.2f" maxx
+
     print(io, "\n")
 
     return ASCIIPlot(String(io))
 end
 
-lineplot(y::AbstractArray) = lineplot([1:length(y)], y)
+function scatterplot(y::AbstractArray; sym::Char = '^')
+    scatterplot([1:length(y)], y, sym = sym)
+end
